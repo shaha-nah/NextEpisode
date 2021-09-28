@@ -10,27 +10,27 @@ part of 'moor_database.dart';
 class Show extends DataClass implements Insertable<Show> {
   final int id;
   final String name;
-  final int season;
-  final int episode;
-  final String type;
-  final String genre;
+  final int? season;
+  final int? episode;
+  final String? type;
+  final String? genre;
   final DateTime? releaseDate;
-  final int day;
+  final int? day;
   final bool completed;
-  final bool binge;
-  final String onBreak;
+  final bool? binge;
+  final String? onBreak;
   Show(
       {required this.id,
       required this.name,
-      required this.season,
-      required this.episode,
-      required this.type,
-      required this.genre,
+      this.season,
+      this.episode,
+      this.type,
+      this.genre,
       this.releaseDate,
-      required this.day,
+      this.day,
       required this.completed,
-      required this.binge,
-      required this.onBreak});
+      this.binge,
+      this.onBreak});
   factory Show.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -40,23 +40,23 @@ class Show extends DataClass implements Insertable<Show> {
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       season: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}season'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}season']),
       episode: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}episode'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}episode']),
       type: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}type'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}type']),
       genre: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}genre'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}genre']),
       releaseDate: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}release_date']),
       day: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}day'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}day']),
       completed: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}completed'])!,
       binge: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}binge'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}binge']),
       onBreak: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}on_break'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}on_break']),
     );
   }
   @override
@@ -64,17 +64,31 @@ class Show extends DataClass implements Insertable<Show> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
-    map['season'] = Variable<int>(season);
-    map['episode'] = Variable<int>(episode);
-    map['type'] = Variable<String>(type);
-    map['genre'] = Variable<String>(genre);
+    if (!nullToAbsent || season != null) {
+      map['season'] = Variable<int?>(season);
+    }
+    if (!nullToAbsent || episode != null) {
+      map['episode'] = Variable<int?>(episode);
+    }
+    if (!nullToAbsent || type != null) {
+      map['type'] = Variable<String?>(type);
+    }
+    if (!nullToAbsent || genre != null) {
+      map['genre'] = Variable<String?>(genre);
+    }
     if (!nullToAbsent || releaseDate != null) {
       map['release_date'] = Variable<DateTime?>(releaseDate);
     }
-    map['day'] = Variable<int>(day);
+    if (!nullToAbsent || day != null) {
+      map['day'] = Variable<int?>(day);
+    }
     map['completed'] = Variable<bool>(completed);
-    map['binge'] = Variable<bool>(binge);
-    map['on_break'] = Variable<String>(onBreak);
+    if (!nullToAbsent || binge != null) {
+      map['binge'] = Variable<bool?>(binge);
+    }
+    if (!nullToAbsent || onBreak != null) {
+      map['on_break'] = Variable<String?>(onBreak);
+    }
     return map;
   }
 
@@ -82,17 +96,24 @@ class Show extends DataClass implements Insertable<Show> {
     return ShowsCompanion(
       id: Value(id),
       name: Value(name),
-      season: Value(season),
-      episode: Value(episode),
-      type: Value(type),
-      genre: Value(genre),
+      season:
+          season == null && nullToAbsent ? const Value.absent() : Value(season),
+      episode: episode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(episode),
+      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
+      genre:
+          genre == null && nullToAbsent ? const Value.absent() : Value(genre),
       releaseDate: releaseDate == null && nullToAbsent
           ? const Value.absent()
           : Value(releaseDate),
-      day: Value(day),
+      day: day == null && nullToAbsent ? const Value.absent() : Value(day),
       completed: Value(completed),
-      binge: Value(binge),
-      onBreak: Value(onBreak),
+      binge:
+          binge == null && nullToAbsent ? const Value.absent() : Value(binge),
+      onBreak: onBreak == null && nullToAbsent
+          ? const Value.absent()
+          : Value(onBreak),
     );
   }
 
@@ -102,15 +123,15 @@ class Show extends DataClass implements Insertable<Show> {
     return Show(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      season: serializer.fromJson<int>(json['season']),
-      episode: serializer.fromJson<int>(json['episode']),
-      type: serializer.fromJson<String>(json['type']),
-      genre: serializer.fromJson<String>(json['genre']),
+      season: serializer.fromJson<int?>(json['season']),
+      episode: serializer.fromJson<int?>(json['episode']),
+      type: serializer.fromJson<String?>(json['type']),
+      genre: serializer.fromJson<String?>(json['genre']),
       releaseDate: serializer.fromJson<DateTime?>(json['releaseDate']),
-      day: serializer.fromJson<int>(json['day']),
+      day: serializer.fromJson<int?>(json['day']),
       completed: serializer.fromJson<bool>(json['completed']),
-      binge: serializer.fromJson<bool>(json['binge']),
-      onBreak: serializer.fromJson<String>(json['onBreak']),
+      binge: serializer.fromJson<bool?>(json['binge']),
+      onBreak: serializer.fromJson<String?>(json['onBreak']),
     );
   }
   @override
@@ -119,15 +140,15 @@ class Show extends DataClass implements Insertable<Show> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'season': serializer.toJson<int>(season),
-      'episode': serializer.toJson<int>(episode),
-      'type': serializer.toJson<String>(type),
-      'genre': serializer.toJson<String>(genre),
+      'season': serializer.toJson<int?>(season),
+      'episode': serializer.toJson<int?>(episode),
+      'type': serializer.toJson<String?>(type),
+      'genre': serializer.toJson<String?>(genre),
       'releaseDate': serializer.toJson<DateTime?>(releaseDate),
-      'day': serializer.toJson<int>(day),
+      'day': serializer.toJson<int?>(day),
       'completed': serializer.toJson<bool>(completed),
-      'binge': serializer.toJson<bool>(binge),
-      'onBreak': serializer.toJson<String>(onBreak),
+      'binge': serializer.toJson<bool?>(binge),
+      'onBreak': serializer.toJson<String?>(onBreak),
     };
   }
 
@@ -215,15 +236,15 @@ class Show extends DataClass implements Insertable<Show> {
 class ShowsCompanion extends UpdateCompanion<Show> {
   final Value<int> id;
   final Value<String> name;
-  final Value<int> season;
-  final Value<int> episode;
-  final Value<String> type;
-  final Value<String> genre;
+  final Value<int?> season;
+  final Value<int?> episode;
+  final Value<String?> type;
+  final Value<String?> genre;
   final Value<DateTime?> releaseDate;
-  final Value<int> day;
+  final Value<int?> day;
   final Value<bool> completed;
-  final Value<bool> binge;
-  final Value<String> onBreak;
+  final Value<bool?> binge;
+  final Value<String?> onBreak;
   const ShowsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -240,34 +261,28 @@ class ShowsCompanion extends UpdateCompanion<Show> {
   ShowsCompanion.insert({
     this.id = const Value.absent(),
     required String name,
-    required int season,
-    required int episode,
-    required String type,
-    required String genre,
+    this.season = const Value.absent(),
+    this.episode = const Value.absent(),
+    this.type = const Value.absent(),
+    this.genre = const Value.absent(),
     this.releaseDate = const Value.absent(),
-    required int day,
+    this.day = const Value.absent(),
     this.completed = const Value.absent(),
     this.binge = const Value.absent(),
-    required String onBreak,
-  })  : name = Value(name),
-        season = Value(season),
-        episode = Value(episode),
-        type = Value(type),
-        genre = Value(genre),
-        day = Value(day),
-        onBreak = Value(onBreak);
+    this.onBreak = const Value.absent(),
+  }) : name = Value(name);
   static Insertable<Show> custom({
     Expression<int>? id,
     Expression<String>? name,
-    Expression<int>? season,
-    Expression<int>? episode,
-    Expression<String>? type,
-    Expression<String>? genre,
+    Expression<int?>? season,
+    Expression<int?>? episode,
+    Expression<String?>? type,
+    Expression<String?>? genre,
     Expression<DateTime?>? releaseDate,
-    Expression<int>? day,
+    Expression<int?>? day,
     Expression<bool>? completed,
-    Expression<bool>? binge,
-    Expression<String>? onBreak,
+    Expression<bool?>? binge,
+    Expression<String?>? onBreak,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -287,15 +302,15 @@ class ShowsCompanion extends UpdateCompanion<Show> {
   ShowsCompanion copyWith(
       {Value<int>? id,
       Value<String>? name,
-      Value<int>? season,
-      Value<int>? episode,
-      Value<String>? type,
-      Value<String>? genre,
+      Value<int?>? season,
+      Value<int?>? episode,
+      Value<String?>? type,
+      Value<String?>? genre,
       Value<DateTime?>? releaseDate,
-      Value<int>? day,
+      Value<int?>? day,
       Value<bool>? completed,
-      Value<bool>? binge,
-      Value<String>? onBreak}) {
+      Value<bool?>? binge,
+      Value<String?>? onBreak}) {
     return ShowsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -321,31 +336,31 @@ class ShowsCompanion extends UpdateCompanion<Show> {
       map['name'] = Variable<String>(name.value);
     }
     if (season.present) {
-      map['season'] = Variable<int>(season.value);
+      map['season'] = Variable<int?>(season.value);
     }
     if (episode.present) {
-      map['episode'] = Variable<int>(episode.value);
+      map['episode'] = Variable<int?>(episode.value);
     }
     if (type.present) {
-      map['type'] = Variable<String>(type.value);
+      map['type'] = Variable<String?>(type.value);
     }
     if (genre.present) {
-      map['genre'] = Variable<String>(genre.value);
+      map['genre'] = Variable<String?>(genre.value);
     }
     if (releaseDate.present) {
       map['release_date'] = Variable<DateTime?>(releaseDate.value);
     }
     if (day.present) {
-      map['day'] = Variable<int>(day.value);
+      map['day'] = Variable<int?>(day.value);
     }
     if (completed.present) {
       map['completed'] = Variable<bool>(completed.value);
     }
     if (binge.present) {
-      map['binge'] = Variable<bool>(binge.value);
+      map['binge'] = Variable<bool?>(binge.value);
     }
     if (onBreak.present) {
-      map['on_break'] = Variable<String>(onBreak.value);
+      map['on_break'] = Variable<String?>(onBreak.value);
     }
     return map;
   }
@@ -388,26 +403,26 @@ class $ShowsTable extends Shows with TableInfo<$ShowsTable, Show> {
       requiredDuringInsert: true);
   final VerificationMeta _seasonMeta = const VerificationMeta('season');
   late final GeneratedColumn<int?> season = GeneratedColumn<int?>(
-      'season', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      'season', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _episodeMeta = const VerificationMeta('episode');
   late final GeneratedColumn<int?> episode = GeneratedColumn<int?>(
-      'episode', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      'episode', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
   late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
-      'type', aliasedName, false,
+      'type', aliasedName, true,
       additionalChecks:
           GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 30),
       typeName: 'TEXT',
-      requiredDuringInsert: true);
+      requiredDuringInsert: false);
   final VerificationMeta _genreMeta = const VerificationMeta('genre');
   late final GeneratedColumn<String?> genre = GeneratedColumn<String?>(
-      'genre', aliasedName, false,
+      'genre', aliasedName, true,
       additionalChecks:
           GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 50),
       typeName: 'TEXT',
-      requiredDuringInsert: true);
+      requiredDuringInsert: false);
   final VerificationMeta _releaseDateMeta =
       const VerificationMeta('releaseDate');
   late final GeneratedColumn<DateTime?> releaseDate =
@@ -415,8 +430,8 @@ class $ShowsTable extends Shows with TableInfo<$ShowsTable, Show> {
           typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _dayMeta = const VerificationMeta('day');
   late final GeneratedColumn<int?> day = GeneratedColumn<int?>(
-      'day', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      'day', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _completedMeta = const VerificationMeta('completed');
   late final GeneratedColumn<bool?> completed = GeneratedColumn<bool?>(
       'completed', aliasedName, false,
@@ -426,18 +441,18 @@ class $ShowsTable extends Shows with TableInfo<$ShowsTable, Show> {
       defaultValue: Constant(false));
   final VerificationMeta _bingeMeta = const VerificationMeta('binge');
   late final GeneratedColumn<bool?> binge = GeneratedColumn<bool?>(
-      'binge', aliasedName, false,
+      'binge', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (binge IN (0, 1))',
       defaultValue: Constant(false));
   final VerificationMeta _onBreakMeta = const VerificationMeta('onBreak');
   late final GeneratedColumn<String?> onBreak = GeneratedColumn<String?>(
-      'on_break', aliasedName, false,
+      'on_break', aliasedName, true,
       additionalChecks:
           GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 50),
       typeName: 'TEXT',
-      requiredDuringInsert: true);
+      requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -473,26 +488,18 @@ class $ShowsTable extends Shows with TableInfo<$ShowsTable, Show> {
     if (data.containsKey('season')) {
       context.handle(_seasonMeta,
           season.isAcceptableOrUnknown(data['season']!, _seasonMeta));
-    } else if (isInserting) {
-      context.missing(_seasonMeta);
     }
     if (data.containsKey('episode')) {
       context.handle(_episodeMeta,
           episode.isAcceptableOrUnknown(data['episode']!, _episodeMeta));
-    } else if (isInserting) {
-      context.missing(_episodeMeta);
     }
     if (data.containsKey('type')) {
       context.handle(
           _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
-    } else if (isInserting) {
-      context.missing(_typeMeta);
     }
     if (data.containsKey('genre')) {
       context.handle(
           _genreMeta, genre.isAcceptableOrUnknown(data['genre']!, _genreMeta));
-    } else if (isInserting) {
-      context.missing(_genreMeta);
     }
     if (data.containsKey('release_date')) {
       context.handle(
@@ -503,8 +510,6 @@ class $ShowsTable extends Shows with TableInfo<$ShowsTable, Show> {
     if (data.containsKey('day')) {
       context.handle(
           _dayMeta, day.isAcceptableOrUnknown(data['day']!, _dayMeta));
-    } else if (isInserting) {
-      context.missing(_dayMeta);
     }
     if (data.containsKey('completed')) {
       context.handle(_completedMeta,
@@ -517,8 +522,6 @@ class $ShowsTable extends Shows with TableInfo<$ShowsTable, Show> {
     if (data.containsKey('on_break')) {
       context.handle(_onBreakMeta,
           onBreak.isAcceptableOrUnknown(data['on_break']!, _onBreakMeta));
-    } else if (isInserting) {
-      context.missing(_onBreakMeta);
     }
     return context;
   }

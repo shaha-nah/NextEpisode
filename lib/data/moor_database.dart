@@ -12,9 +12,7 @@ class Shows extends Table {
   IntColumn get season => integer().nullable()();
   IntColumn get episode => integer().nullable()();
   TextColumn get type => text().withLength(min: 1, max: 30).nullable()();
-  TextColumn get genre => text().withLength(min: 1, max: 50).nullable()();
   DateTimeColumn get releaseDate => dateTime().nullable()();
-  IntColumn get day => integer().nullable()();
   BoolColumn get completed => boolean().withDefault(Constant(false))();
   BoolColumn get binge => boolean().withDefault(Constant(false)).nullable()();
   TextColumn get onBreak => text().withLength(min: 1, max: 50).nullable()();
