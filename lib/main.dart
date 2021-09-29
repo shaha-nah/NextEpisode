@@ -1,34 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:next_episode/data/moor_database.dart';
 import 'package:next_episode/pages/completed.dart';
 import 'package:next_episode/pages/schedule.dart';
 import 'package:next_episode/pages/today.dart';
-import 'package:provider/provider.dart';
+
+import 'pages/add.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  int currentIndex = 0;
-
-  final screens = [
-    Today(),
-    Schedule(),
-    Completed()
-  ];
-  
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (_) => MyDatabase(),
-      child: MaterialApp(
-        title: 'Material App',
-        home: Scaffold(
-          appBar: AppBar(
+    return new MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: new HomeScreen());
+  }
+}
+
+
+class HomeScreen extends StatefulWidget {
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int currentIndex = 0;
+
+  final screens = [Today(), Schedule(), Completed()];
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: AppBar(
             title: Text("Next Episode"),
           ),
           body: Center(
@@ -52,8 +55,13 @@ class _MyAppState extends State<MyApp> {
               ),
             ],
           ),
-        ),
-      ),
-    );
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Add()));
+            },
+            child: Icon(Icons.add),
+          ),
+        );
   }
 }
