@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:next_episode/pages/completed.dart';
-import 'package:next_episode/pages/schedule.dart';
-import 'package:next_episode/pages/today.dart';
+import 'package:next_episode/screen/completed.dart';
+import 'package:next_episode/screen/schedule.dart';
+import 'package:next_episode/screen/today.dart';
 
-import 'pages/add.dart';
+import 'screen/add.dart';
 
 void main() => runApp(MyApp());
 
